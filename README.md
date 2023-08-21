@@ -5,7 +5,8 @@ In this Project I build a Tank on crawlers based on the ev3 Lego Mindstorm set i
 ## Structure
 I used two Motors, one ultrasonic sensor, coulour sensor and the touchsensor.
 For the Roboter to drive i used crawler which got etached by wheels to the motors:
-![1692601246863](https://github.com/Cyberarmor00/ev3_Tank/assets/131645784/4a865704-44c4-4f84-a8fc-f4ce30467fdb "Tank")
+![Tank_Image](https://github.com/Cyberarmor00/ev3_Tank/assets/131645784/fb2fa981-d58d-4437-a4af-6609db552343 "Tank")
+
 
 
 I used this instruction to build the base of the Tank:
