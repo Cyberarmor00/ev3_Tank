@@ -8,78 +8,22 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 ev3 = EV3Brick()
-ds=DistantSensor(Port.S1)
-cs=ColorSensor(Port.S2)
-ts=TouchSensor(Port.S3)
+ds=UltrasonicSensor(Port.S4)
+cs=ColorSensor(Port.S3)
+ts=TouchSensor(Port.S2)
+SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE)
 state = 0
 Programm = 0
 threshold = 47
 PWert = 1.2
 Abweichung = 0
+myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 46, 200)
 
-SmallMotor Motor(Port.C)
-myRobot.DriveBase(left_motor(Port.A), right_motor(port.B), wheel_diameter, axle_track)
-
-#Abstandsregelung
-def programm1():
-    distanz = ds.distance()
-    myRobot.drive(250)
-    if distanz =< 200:
-        myRobot.stop()
-        myRobot.turn(120)
-
-#Distanz Messung
-def programm2():
-    if state == 1:
-        if ts.pressed()==True:
-            state=0
-            myRobot.stop()
-            ev3.scree.print(myRobot.distance())
-        else:
-            ev3.screen.clear()
-            ev3.screen.print(myRobot.distance())
-    elif state == 0:
-        if ts.pressed()==True:
-            state=1
-            myRobot.reset()
-            ev3.screen.clear()
-            myRobot.drive(250)
-        else:
-            continue
-
-#Line Tracking
-def programm3():
-    if SmallMotor.angle()== 90:
-        SmallMotor.run.angle(20,-90, then=Stop.HOLD)
-    myRobot.drive(40, TurnRate())
-
-#Spezialprogramm
-def programm4():
-    if SmallMotor.angle()==0:
-        SmallMotor.run_angle(20, 90, then=Stop.HOLD)
-    else:
-        if cs.color()==Color.RED:
-            Quadrat()
-        elif cs.color()==Color.BLUE:
-            Drehung()
-        elif cs.color()=Color.GREEN:
-            Dreieck()
-        else:
-            continue
-
-#Reset Programm
-def programm0():
-    myRobot.stop()
-    ev3.scree.clear()
-    state = 0
-    Abweichung = 0
-    i = 0
-    x = 0
-    myRobot.reset()
-    if SmallMotor.angle()==90:
-        SmallMotor.run.angle(20,-90, then=Stop.HOLD)
 
 def TurnRate():
+    global Abweichung
+    global PWert
+    global threshold
     Abweichung = cs.reflection()-threshold
     turn = Abweichung * PWert
     return turn
@@ -106,6 +50,69 @@ def Dreieck():
     myRobot.turn(-30)
     x = 0
 
+#Abstandsregelung
+def programm1():
+    distanz = ds.distance()
+    myRobot.drive(250)
+    if distanz <= 200:
+        myRobot.stop()
+        myRobot.turn(120)
+
+#Distanz Messung
+def programm2():
+    global state
+    if state == 1:
+        if ts.pressed()==True:
+            state=0
+            myRobot.stop()
+            ev3.screen.print(myRobot.distance())
+        else:
+            ev3.screen.clear()
+            ev3.screen.print(myRobot.distance())
+    elif state == 0:
+        if ts.pressed()==True:
+            state=1
+            myRobot.reset()
+            ev3.screen.clear()
+            myRobot.drive(250)
+        else:
+            pass
+
+#Line Tracking
+def programm3():
+    if SmallMotor.angle()== 90:
+        SmallMotor.run_angle(20,-90, then=Stop.HOLD)
+    myRobot.drive(40, TurnRate())
+
+#Spezialprogramm
+def programm4():
+    if SmallMotor.angle()==0:
+        SmallMotor.run_angle(20, 90, then=Stop.HOLD)
+    else:
+        if cs.color()==Color.RED:
+            Quadrat()
+        elif cs.color()==Color.BLUE:
+            Drehung()
+        elif cs.color()==Color.GREEN:
+            Dreieck()
+        else:
+            pass
+
+#Reset Programm
+def programm0():
+    global Abweichung
+    global x
+    global i
+    myRobot.stop()
+    ev3.screen.clear()
+    state = 0
+    Abweichung = 0
+    i = 0
+    x = 0
+    myRobot.reset()
+    if SmallMotor.angle()==90:
+        SmallMotor.run_angle(20,-90, then=Stop.HOLD)
+
 def detectProgram():
     if Button.UP in ev3.buttons.pressed():
         Programm = 1
@@ -118,7 +125,7 @@ def detectProgram():
     elif Button.CENTER in ev3.buttons.pressed():
         Programm = 0
     else:
-        continue
+        pass
 
 while True:
     detectProgram()
@@ -133,7 +140,7 @@ while True:
     elif Programm == 0:
         programm0()
     else:
-        continue
+        pass
 
     
     
