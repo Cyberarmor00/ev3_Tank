@@ -12,6 +12,7 @@ ds=UltrasonicSensor(Port.S4)
 cs=ColorSensor(Port.S3)
 ts=TouchSensor(Port.S2)
 SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE)
+
 state = 0
 Programm = 0
 threshold = 47
@@ -21,9 +22,6 @@ myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 46, 200)
 
 
 def TurnRate():
-    global Abweichung
-    global PWert
-    global threshold
     Abweichung = cs.reflection()-threshold
     turn = Abweichung * PWert
     return turn
@@ -60,7 +58,6 @@ def programm1():
 
 #Distanz Messung
 def programm2():
-    global state
     if state == 1:
         if ts.pressed()==True:
             state=0
@@ -100,9 +97,6 @@ def programm4():
 
 #Reset Programm
 def programm0():
-    global Abweichung
-    global x
-    global i
     myRobot.stop()
     ev3.screen.clear()
     state = 0
@@ -114,6 +108,7 @@ def programm0():
         SmallMotor.run_angle(20,-90, then=Stop.HOLD)
 
 def detectProgram():
+    Programm = 0
     if Button.UP in ev3.buttons.pressed():
         Programm = 1
     elif Button.RIGHT in ev3.buttons.pressed():
@@ -126,18 +121,18 @@ def detectProgram():
         Programm = 0
     else:
         pass
+    return Programm
 
 while True:
-    detectProgram()
-    if Programm == 1:
+    if detectProgram() == 1:
         programm1()
-    elif Programm == 2:
+    elif detectProgram() == 2:
         programm2()
-    elif Programm == 3:
+    elif detectProgram() == 3:
         programm3()
-    elif Programm == 4:
+    elif detectProgram() == 4:
         programm4()
-    elif Programm == 0:
+    elif detectProgram() == 0:
         programm0()
     else:
         pass
