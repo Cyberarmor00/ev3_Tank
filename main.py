@@ -12,9 +12,8 @@ ds=UltrasonicSensor(Port.S4)
 cs=ColorSensor(Port.S3)
 ts=TouchSensor(Port.S2)
 SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE)
-
-state = 0
 Programm = 0
+state = 0
 threshold = 47
 PWert = 1.2
 Abweichung = 0
@@ -51,13 +50,14 @@ def Dreieck():
 #Abstandsregelung
 def programm1():
     distanz = ds.distance()
-    myRobot.drive(250)
+    myRobot.drive(250,0)
     if distanz <= 200:
         myRobot.stop()
         myRobot.turn(120)
 
 #Distanz Messung
 def programm2():
+    global state
     if state == 1:
         if ts.pressed()==True:
             state=0
@@ -71,7 +71,7 @@ def programm2():
             state=1
             myRobot.reset()
             ev3.screen.clear()
-            myRobot.drive(250)
+            myRobot.drive(250,0)
         else:
             pass
 
@@ -108,7 +108,7 @@ def programm0():
         SmallMotor.run_angle(20,-90, then=Stop.HOLD)
 
 def detectProgram():
-    Programm = 0
+    global Programm
     if Button.UP in ev3.buttons.pressed():
         Programm = 1
     elif Button.RIGHT in ev3.buttons.pressed():
@@ -124,18 +124,21 @@ def detectProgram():
     return Programm
 
 while True:
-    if detectProgram() == 1:
+    currentProgramm = detectProgram()
+    ev3.screen.print(currentProgramm)
+    if currentProgramm == 1:
         programm1()
-    elif detectProgram() == 2:
+    elif currentProgramm == 2:
         programm2()
-    elif detectProgram() == 3:
+    elif currentProgramm == 3:
         programm3()
-    elif detectProgram() == 4:
+    elif currentProgramm == 4:
         programm4()
-    elif detectProgram() == 0:
+    elif currentProgramm == 0:
         programm0()
     else:
         pass
+    wait(100)
 
     
     
