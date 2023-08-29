@@ -17,7 +17,7 @@ state = 0
 threshold = 47
 PWert = 1.2
 Abweichung = 0
-myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 46, 200)
+myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 45, 200)
 
 
 def TurnRate():
@@ -25,6 +25,7 @@ def TurnRate():
     turn = Abweichung * PWert
     return turn
 
+#Quadrat
 def Quadrat():
     myRobot.turn(90)
     for i in range (2):
@@ -33,11 +34,13 @@ def Quadrat():
     myRobot.straight(400)
     i = 0
 
+#360° Drehung
 def Drehung():
     myRobot.straight(-50)
     myRobot.turn(360)
     myRobot.straight(50)
 
+#Dreieck
 def Dreieck():
     myRobot.turn(150)
     for x in range(1):
@@ -62,10 +65,11 @@ def programm2():
         if ts.pressed()==True:
             state=0
             myRobot.stop()
-            ev3.screen.print(myRobot.distance())
+            ev3.screen.clear()
+            ev3.screen.draw_text(10,50, myRobot.distance())
         else:
             ev3.screen.clear()
-            ev3.screen.print(myRobot.distance())
+            ev3.screen.draw_text(10,50, myRobot.distance())
     elif state == 0:
         if ts.pressed()==True:
             state=1
@@ -74,17 +78,18 @@ def programm2():
             myRobot.drive(250,0)
         else:
             pass
+    wait(200)
 
 #Line Tracking
 def programm3():
-    if SmallMotor.angle()== 90:
-        SmallMotor.run_angle(20,-90, then=Stop.HOLD)
+    if SmallMotor.angle() < 90:
+        SmallMotor.run_target(20,90, then=Stop.HOLD)
     myRobot.drive(40, TurnRate())
 
 #Spezialprogramm
 def programm4():
-    if SmallMotor.angle()==0:
-        SmallMotor.run_angle(20, 90, then=Stop.HOLD)
+    if SmallMotor.angle()>0:
+        SmallMotor.run_target(20, 0, then=Stop.HOLD)
     else:
         if cs.color()==Color.RED:
             Quadrat()
@@ -104,9 +109,10 @@ def programm0():
     i = 0
     x = 0
     myRobot.reset()
-    if SmallMotor.angle()==90:
-        SmallMotor.run_angle(20,-90, then=Stop.HOLD)
+    if SmallMotor.angle()>0:
+        SmallMotor.run_target(20,0, then=Stop.HOLD)
 
+#Function to detect the programm type
 def detectProgram():
     global Programm
     if Button.UP in ev3.buttons.pressed():
@@ -123,18 +129,28 @@ def detectProgram():
         pass
     return Programm
 
+#Main programm
 while True:
     currentProgramm = detectProgram()
-    ev3.screen.print(currentProgramm)
     if currentProgramm == 1:
+        ev3.screen.clear()
+        ev3.screen.draw_text(10, 40, currentProgramm)
         programm1()
     elif currentProgramm == 2:
+        ev3.screen.clear()
+        ev3.screen.draw_text(10, 40, currentProgramm)
         programm2()
     elif currentProgramm == 3:
+        ev3.screen.clear()
+        ev3.screen.draw_text(10, 40, currentProgramm)
         programm3()
     elif currentProgramm == 4:
+        ev3.screen.clear()
+        ev3.screen.draw_text(10, 40, currentProgramm)
         programm4()
     elif currentProgramm == 0:
+        ev3.screen.clear()
+        ev3.screen.draw_text(10, 40, "Press a button!")
         programm0()
     else:
         pass
