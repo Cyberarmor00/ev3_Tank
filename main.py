@@ -25,7 +25,7 @@ def TurnRate():
     turn = Abweichung * PWert
     return turn
 
-#Quadrat
+#Quadrat, RED
 def Quadrat():
     myRobot.turn(90)
     for i in range (2):
@@ -34,13 +34,13 @@ def Quadrat():
     myRobot.straight(400)
     i = 0
 
-#360° Drehung
+#360° Drehung, BLUE
 def Drehung():
     myRobot.straight(-50)
     myRobot.turn(360)
     myRobot.straight(50)
 
-#Dreieck
+#Dreieck, GREEN
 def Dreieck():
     myRobot.turn(150)
     for x in range(1):
@@ -100,15 +100,14 @@ def programm4():
         else:
             pass
 
-#Reset Programm
+#Reset Programm, reset all parameters
 def programm0():
     myRobot.stop()
-    ev3.screen.clear()
+    myRobot.reset()
     state = 0
     Abweichung = 0
     i = 0
     x = 0
-    myRobot.reset()
     if SmallMotor.angle()>0:
         SmallMotor.run_target(20,0, then=Stop.HOLD)
 
@@ -116,12 +115,16 @@ def programm0():
 def detectProgram():
     global Programm
     if Button.UP in ev3.buttons.pressed():
+        ev3.speaker.say("distance control")
         Programm = 1
     elif Button.RIGHT in ev3.buttons.pressed():
+        ev3.speaker.say("Distance Meassuring")
         Programm = 2
     elif Button.DOWN in ev3.buttons.pressed():
+        ev3.speaker.say("Line tracking")
         Programm = 3
     elif Button.LEFT in ev3.buttons.pressed():
+        ev3.speaker.say("Show me a Color")
         Programm = 4
     elif Button.CENTER in ev3.buttons.pressed():
         Programm = 0
