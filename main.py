@@ -14,7 +14,7 @@ ds=UltrasonicSensor(Port.S4)
 cs=ColorSensor(Port.S3)
 ts=TouchSensor(Port.S2)
 SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE)
-myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 45, 200)
+myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 38.5, 200)
 
 #define Variables
 Programm = 0
@@ -32,7 +32,7 @@ def TurnRate():
 #Quadrat, RED
 def Quadrat():
     myRobot.turn(90)
-    for i in range (2):
+    for i in range (3):
         myRobot.straight(400)
         myRobot.turn(90)
     myRobot.straight(400)
@@ -47,7 +47,7 @@ def Drehung():
 #Dreieck, GREEN
 def Dreieck():
     myRobot.turn(150)
-    for x in range(1):
+    for x in range(2):
         myRobot.straight(400)
         myRobot.turn(120)
     myRobot.straight(400)
@@ -60,6 +60,7 @@ def programm1():
     myRobot.drive(250,0)
     if distanz <= 200:
         myRobot.stop()
+        myRobot.straight(-50)
         myRobot.turn(120)
 
 #Distanz Messung
@@ -79,9 +80,9 @@ def programm2():
             state=1
             myRobot.reset()
             ev3.screen.clear()
-            myRobot.drive(250,0)
+            myRobot.drive(150,0)
         else:
-            pass
+            ev3.screen.draw_text(10,50, myRobot.distance())
     wait(200)
 
 #Line Tracking
@@ -120,15 +121,19 @@ def detectProgram():
     global Programm
     if Button.UP in ev3.buttons.pressed():
         ev3.speaker.say("distance control")
+        wait(200)
         Programm = 1
     elif Button.RIGHT in ev3.buttons.pressed():
-        ev3.speaker.say("Distance Meassuring")
+        ev3.speaker.say("Distance meassuring")
+        wait(200)
         Programm = 2
     elif Button.DOWN in ev3.buttons.pressed():
         ev3.speaker.say("Line tracking")
+        wait(200)
         Programm = 3
     elif Button.LEFT in ev3.buttons.pressed():
         ev3.speaker.say("Show me a Color")
+        wait(200)
         Programm = 4
     elif Button.CENTER in ev3.buttons.pressed():
         Programm = 0
@@ -136,24 +141,24 @@ def detectProgram():
         pass
     return Programm
 
-#Main programm
+#Main programm/Loop
 while True:
     currentProgramm = detectProgram()
     if currentProgramm == 1:
         ev3.screen.clear()
-        ev3.screen.draw_text(10, 40, currentProgramm)
+        ev3.screen.draw_text(10, 40, "Distance control")
         programm1()
     elif currentProgramm == 2:
         ev3.screen.clear()
-        ev3.screen.draw_text(10, 40, currentProgramm)
+        ev3.screen.draw_text(10, 30, "Distance (mm): ")
         programm2()
     elif currentProgramm == 3:
         ev3.screen.clear()
-        ev3.screen.draw_text(10, 40, currentProgramm)
+        ev3.screen.draw_text(10, 40, "Line tracking")
         programm3()
     elif currentProgramm == 4:
         ev3.screen.clear()
-        ev3.screen.draw_text(10, 40, currentProgramm)
+        ev3.screen.draw_text(10, 40, "Show me a color!")
         programm4()
     elif currentProgramm == 0:
         ev3.screen.clear()
@@ -162,6 +167,3 @@ while True:
     else:
         pass
     wait(100)
-
-    
-    
