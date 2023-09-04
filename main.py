@@ -8,18 +8,22 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
 ev3 = EV3Brick()
+
+#initialise Sensors and Motors
 ds=UltrasonicSensor(Port.S4)
 cs=ColorSensor(Port.S3)
 ts=TouchSensor(Port.S2)
 SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE)
+myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 45, 200)
+
+#define Variables
 Programm = 0
 state = 0
 threshold = 47
 PWert = 1.2
 Abweichung = 0
-myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 45, 200)
 
-
+#P-Regler for Turnrate
 def TurnRate():
     Abweichung = cs.reflection()-threshold
     turn = Abweichung * PWert
