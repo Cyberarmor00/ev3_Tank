@@ -13,8 +13,8 @@ ev3 = EV3Brick()
 ds=UltrasonicSensor(Port.S4)
 cs=ColorSensor(Port.S3)
 ts=TouchSensor(Port.S2)
-SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE)
-myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 38.5, 200)
+SmallMotor=Motor(Port.C, positive_direction=Direction.CLOCKWISE) #Kleiner Motor
+myRobot = DriveBase(Motor(Port.A), Motor(Port.B), 38.5, 200) #Antriebsmotoren
 
 #define Variables
 Programm = 0
@@ -54,7 +54,7 @@ def Dreieck():
     myRobot.turn(-30)
     x = 0
 
-#Abstandsregelung
+#Abstandsregelung, Up Button
 def programm1():
     distanz = ds.distance()
     myRobot.drive(250,0)
@@ -63,7 +63,7 @@ def programm1():
         myRobot.straight(-50)
         myRobot.turn(120)
 
-#Distanz Messung
+#Distanz Messung, Right Button
 def programm2():
     global state
     if state == 1:
@@ -85,13 +85,13 @@ def programm2():
             ev3.screen.draw_text(10,50, myRobot.distance())
     wait(200)
 
-#Line Tracking
+#Line Tracking, Down Button
 def programm3():
     if SmallMotor.angle() < 90:
         SmallMotor.run_target(20,90, then=Stop.HOLD)
     myRobot.drive(40, TurnRate())
 
-#Spezialprogramm
+#Spezialprogramm, Left Button 
 def programm4():
     if SmallMotor.angle()>0:
         SmallMotor.run_target(20, 0, then=Stop.HOLD)
