@@ -14,5 +14,6 @@ I used this instruction to build the base of the Tank:
 This following document gives you more information and target agreements, which I will compile in this project:
 [Leistungsnachweis3_Pflichtenheft_TobiasFierz.pdf](https://github.com/Cyberarmor00/ev3_Tank/files/12393512/Leistungsnachweis3_Pflichtenheft_TobiasFierz.pdf)
 
+This file gives you the whole documentation from building the tank until write the code and testing my device:
 
-More informations will follow soon....
+[Leistungsnachweis3_TobiasFierz.pdf](https://github.com/Cyberarmor00/ev3_Tank/files/12645719/Leistungsnachweis3_TobiasFierz.pdf)
